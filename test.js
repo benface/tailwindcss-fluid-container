@@ -2,26 +2,39 @@ const _ = require('lodash');
 const cssMatcher = require('jest-matcher-css');
 const postcss = require('postcss');
 const tailwindcss = require('tailwindcss');
-const defaultConfig = require('tailwindcss/defaultConfig')();
+const defaultConfig = require('tailwindcss/defaultConfig');
 const fluidContainerPlugin = require('./index.js');
 
-const disabledModules = {};
-Object.keys(defaultConfig.modules).forEach(module => {
-  disabledModules[module] = false;
-});
-
-const generatePluginCss = (options = {}) => {
-  return postcss(tailwindcss({
-    screens: {
-      'sm': '600px',
-      'md': '800px',
-      'lg': '1000px',
-    },
-    modules: disabledModules,
-    plugins: [fluidContainerPlugin(options)],
-  })).process('@tailwind components; @tailwind utilities;', {
+const generatePluginCss = (config, pluginOptions = {}) => {
+  return postcss(
+    tailwindcss(
+      _.merge({
+        theme: {
+          screens: {
+            'sm': '640px',
+          },
+        },
+        corePlugins: {
+          preflight: false,
+          container: false,
+          ...(function() {
+            let disabledCorePlugins = {};
+            Object.keys(defaultConfig.variants).forEach(corePlugin => {
+              disabledCorePlugins[corePlugin] = false;
+            });
+            return disabledCorePlugins;
+          })(),
+        },
+        plugins: [
+          fluidContainerPlugin(pluginOptions),
+        ],
+      }, config)
+    )
+  )
+  .process('@tailwind base; @tailwind components; @tailwind utilities;', {
     from: undefined,
-  }).then(result => {
+  })
+  .then(result => {
     return result.css;
   });
 };
@@ -30,7 +43,7 @@ expect.extend({
   toMatchCss: cssMatcher,
 });
 
-test('options are not required', () => {
+test('the plugin generates a component, some utilities, and responsive variants by default', () => {
   return generatePluginCss().then(css => {
     expect(css).toMatchCss(`
       .c-container {
@@ -48,14 +61,52 @@ test('options are not required', () => {
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-ml-container { margin-left: -15px; }
       .-mr-container { margin-right: -15px; }
+      @media (min-width: 640px) {
+        .sm\\:px-container { padding-left: 15px; padding-right: 15px; }
+        .sm\\:pl-container { padding-left: 15px; }
+        .sm\\:pr-container { padding-right: 15px; }
+        .sm\\:mx-container { margin-left: 15px; margin-right: 15px; }
+        .sm\\:ml-container { margin-left: 15px; }
+        .sm\\:mr-container { margin-right: 15px; }
+        .sm\\:-mx-container { margin-left: -15px; margin-right: -15px; }
+        .sm\\:-ml-container { margin-left: -15px; }
+        .sm\\:-mr-container { margin-right: -15px; }
+      }
     `);
   });
 });
 
-test('you can set a maximum width and customize the padding', () => {
+test('the utilities can be disabled', () => {
+  return generatePluginCss({}, {
+    widthUtilities: false,
+    paddingUtilities: false,
+    marginUtilities: false,
+    negativeMarginUtilities: false,
+  }).then(css => {
+    expect(css).toMatchCss(`
+      .c-container {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+    `);
+  });
+});
+
+test('the container can be customized', () => {
   return generatePluginCss({
-    maxWidth: '1200px',
-    padding: '30px',
+    theme: {
+      fluidContainer: {
+        'default': {
+          maxWidth: '1200px',
+          padding: '30px',
+        },
+      },
+    },
+    variants: {
+      fluidContainer: [],
+    },
   }).then(css => {
     expect(css).toMatchCss(`
       .c-container {
@@ -81,8 +132,12 @@ test('you can set a maximum width and customize the padding', () => {
   });
 });
 
-test('you can customize the component prefix', () => {
+test('the component prefix can be removed', () => {
   return generatePluginCss({
+    variants: {
+      fluidContainer: [],
+    },
+  }, {
     componentPrefix: '',
   }).then(css => {
     expect(css).toMatchCss(`
@@ -105,11 +160,16 @@ test('you can customize the component prefix', () => {
   });
 });
 
-test('you can change the padding at different screen sizes', () => {
+test('the padding can be responsive', () => {
   return generatePluginCss({
-    responsivePadding: {
-      'sm': '30px',
-      'lg': '45px',
+    theme: {
+      fluidContainer: {
+        'default': {
+          responsivePadding: {
+            'sm': '30px',
+          },
+        },
+      },
     },
   }).then(css => {
     expect(css).toMatchCss(`
@@ -117,14 +177,9 @@ test('you can change the padding at different screen sizes', () => {
         --container-padding: 15px;
         --container-padding-negative: calc(var(--container-padding) * -1);
       }
-      @media (min-width: 600px) {
+      @media (min-width: 640px) {
         html {
           --container-padding: 30px;
-        }
-      }
-      @media (min-width: 1000px) {
-        html {
-          --container-padding: 45px;
         }
       }
       .c-container {
@@ -177,13 +232,59 @@ test('you can change the padding at different screen sizes', () => {
         margin-right: -15px;
         margin-right: var(--container-padding-negative);
       }
+      @media (min-width: 640px) {
+        .sm\\:px-container {
+          padding-left: 15px;
+          padding-left: var(--container-padding);
+          padding-right: 15px;
+          padding-right: var(--container-padding);
+        }
+        .sm\\:pl-container {
+          padding-left: 15px;
+          padding-left: var(--container-padding);
+        }
+        .sm\\:pr-container {
+          padding-right: 15px;
+          padding-right: var(--container-padding);
+        }
+        .sm\\:mx-container {
+          margin-left: 15px;
+          margin-left: var(--container-padding);
+          margin-right: 15px;
+          margin-right: var(--container-padding);
+        }
+        .sm\\:ml-container {
+          margin-left: 15px;
+          margin-left: var(--container-padding);
+        }
+        .sm\\:mr-container {
+          margin-right: 15px;
+          margin-right: var(--container-padding);
+        }
+        .sm\\:-mx-container {
+          margin-left: -15px;
+          margin-left: var(--container-padding-negative);
+          margin-right: -15px;
+          margin-right: var(--container-padding-negative);
+        }
+        .sm\\:-ml-container {
+          margin-left: -15px;
+          margin-left: var(--container-padding-negative);
+        }
+        .sm\\:-mr-container {
+          margin-right: -15px;
+          margin-right: var(--container-padding-negative);
+        }
+      }
     `);
   });
 });
 
-test('variants are supported', () => {
+test('variants can be customized', () => {
   return generatePluginCss({
-    variants: ['hover'],
+    variants: {
+      fluidContainer: ['hover'],
+    },
   }).then(css => {
     expect(css).toMatchCss(`
       .c-container {
@@ -195,18 +296,18 @@ test('variants are supported', () => {
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pl-container { padding-left: 15px; }
       .pr-container { padding-right: 15px; }
-      .mx-container { margin-left: 15px; margin-right: 15px; }
-      .ml-container { margin-left: 15px; }
-      .mr-container { margin-right: 15px; }
-      .-mx-container { margin-left: -15px; margin-right: -15px; }
-      .-ml-container { margin-left: -15px; }
-      .-mr-container { margin-right: -15px; }
       .hover\\:px-container:hover { padding-left: 15px; padding-right: 15px; }
       .hover\\:pl-container:hover { padding-left: 15px; }
       .hover\\:pr-container:hover { padding-right: 15px; }
+      .mx-container { margin-left: 15px; margin-right: 15px; }
+      .ml-container { margin-left: 15px; }
+      .mr-container { margin-right: 15px; }
       .hover\\:mx-container:hover { margin-left: 15px; margin-right: 15px; }
       .hover\\:ml-container:hover { margin-left: 15px; }
       .hover\\:mr-container:hover { margin-right: 15px; }
+      .-mx-container { margin-left: -15px; margin-right: -15px; }
+      .-ml-container { margin-left: -15px; }
+      .-mr-container { margin-right: -15px; }
       .hover\\:-mx-container:hover { margin-left: -15px; margin-right: -15px; }
       .hover\\:-ml-container:hover { margin-left: -15px; }
       .hover\\:-mr-container:hover { margin-right: -15px; }
@@ -214,120 +315,166 @@ test('variants are supported', () => {
   });
 });
 
-test('you can generate multiple containers', () => {
+test('multiple containers can be generated', () => {
   return generatePluginCss({
-    maxWidth: '1000px',
-    componentPrefix: 'custom-',
-    variants: ['active'],
-    containers: {
-      'content': {
-        maxWidth: '1200px',
-      },
-      'content-large': {
-        maxWidth: '1400px',
-        padding: '30px',
-        responsivePadding: {
-          'md': '10vw',
+    theme: {
+      fluidContainer: {
+        'sm': {
+          maxWidth: '1200px',
         },
-        componentPrefix: 'c-',
-        variants: [],
-      }
-    }
+        'lg': {
+          maxWidth: '1400px',
+          padding: '30px',
+          responsivePadding: {
+            'sm': '10vw',
+          },
+        }
+      },
+    },
+  }, {
+    componentPrefix: 'custom-',
   }).then(css => {
     expect(css).toMatchCss(`
-      .custom-content {
+      html {
+        --container-lg-padding: 30px;
+        --container-lg-padding-negative: calc(var(--container-lg-padding) * -1);
+      }
+      @media (min-width: 640px) {
+        html {
+          --container-lg-padding: 10vw;
+        }
+      }
+      .custom-container-sm {
         margin-left: auto;
         margin-right: auto;
         max-width: 1200px;
         padding-left: 15px;
         padding-right: 15px;
       }
-      html {
-        --content-large-padding: 30px;
-        --content-large-padding-negative: calc(var(--content-large-padding) * -1);
-      }
-      @media (min-width: 800px) {
-        html {
-          --content-large-padding: 10vw;
-        }
-      }
-      .c-content-large {
+      .custom-container-lg {
         margin-left: auto;
         margin-right: auto;
         max-width: 1400px;
         padding-left: 30px;
-        padding-left: var(--content-large-padding);
+        padding-left: var(--container-lg-padding);
         padding-right: 30px;
-        padding-right: var(--content-large-padding);
+        padding-right: var(--container-lg-padding);
       }
-      .w-content { width: 1200px; }
-      .min-w-content { min-width: 1200px; }
-      .max-w-content { max-width: 1200px; }
-      .active\\:w-content:active { width: 1200px; }
-      .active\\:min-w-content:active { min-width: 1200px; }
-      .active\\:max-w-content:active { max-width: 1200px; }
-      .px-content { padding-left: 15px; padding-right: 15px; }
-      .pl-content { padding-left: 15px; }
-      .pr-content { padding-right: 15px; }
-      .mx-content { margin-left: 15px; margin-right: 15px; }
-      .ml-content { margin-left: 15px; }
-      .mr-content { margin-right: 15px; }
-      .-mx-content { margin-left: -15px; margin-right: -15px; }
-      .-ml-content { margin-left: -15px; }
-      .-mr-content { margin-right: -15px; }
-      .active\\:px-content:active { padding-left: 15px; padding-right: 15px; }
-      .active\\:pl-content:active { padding-left: 15px; }
-      .active\\:pr-content:active { padding-right: 15px; }
-      .active\\:mx-content:active { margin-left: 15px; margin-right: 15px; }
-      .active\\:ml-content:active { margin-left: 15px; }
-      .active\\:mr-content:active { margin-right: 15px; }
-      .active\\:-mx-content:active { margin-left: -15px; margin-right: -15px; }
-      .active\\:-ml-content:active { margin-left: -15px; }
-      .active\\:-mr-content:active { margin-right: -15px; }
-      .w-content-large { width: 1400px; }
-      .min-w-content-large { min-width: 1400px; }
-      .max-w-content-large { max-width: 1400px; }
-      .px-content-large {
+      .w-container-sm { width: 1200px; }
+      .min-w-container-sm { min-width: 1200px; }
+      .max-w-container-sm { max-width: 1200px; }
+      .px-container-sm { padding-left: 15px; padding-right: 15px; }
+      .pl-container-sm { padding-left: 15px; }
+      .pr-container-sm { padding-right: 15px; }
+      .mx-container-sm { margin-left: 15px; margin-right: 15px; }
+      .ml-container-sm { margin-left: 15px; }
+      .mr-container-sm { margin-right: 15px; }
+      .-mx-container-sm { margin-left: -15px; margin-right: -15px; }
+      .-ml-container-sm { margin-left: -15px; }
+      .-mr-container-sm { margin-right: -15px; }
+      .w-container-lg { width: 1400px; }
+      .min-w-container-lg { min-width: 1400px; }
+      .max-w-container-lg { max-width: 1400px; }
+      .px-container-lg {
         padding-left: 30px;
-        padding-left: var(--content-large-padding);
+        padding-left: var(--container-lg-padding);
         padding-right: 30px;
-        padding-right: var(--content-large-padding);
+        padding-right: var(--container-lg-padding);
       }
-      .pl-content-large {
+      .pl-container-lg {
         padding-left: 30px;
-        padding-left: var(--content-large-padding);
+        padding-left: var(--container-lg-padding);
       }
-      .pr-content-large {
+      .pr-container-lg {
         padding-right: 30px;
-        padding-right: var(--content-large-padding);
+        padding-right: var(--container-lg-padding);
       }
-      .mx-content-large {
+      .mx-container-lg {
         margin-left: 30px;
-        margin-left: var(--content-large-padding);
+        margin-left: var(--container-lg-padding);
         margin-right: 30px;
-        margin-right: var(--content-large-padding);
+        margin-right: var(--container-lg-padding);
       }
-      .ml-content-large {
+      .ml-container-lg {
         margin-left: 30px;
-        margin-left: var(--content-large-padding);
+        margin-left: var(--container-lg-padding);
       }
-      .mr-content-large {
+      .mr-container-lg {
         margin-right: 30px;
-        margin-right: var(--content-large-padding);
+        margin-right: var(--container-lg-padding);
       }
-      .-mx-content-large {
+      .-mx-container-lg {
         margin-left: -30px;
-        margin-left: var(--content-large-padding-negative);
+        margin-left: var(--container-lg-padding-negative);
         margin-right: -30px;
-        margin-right: var(--content-large-padding-negative);
+        margin-right: var(--container-lg-padding-negative);
       }
-      .-ml-content-large {
+      .-ml-container-lg {
         margin-left: -30px;
-        margin-left: var(--content-large-padding-negative);
+        margin-left: var(--container-lg-padding-negative);
       }
-      .-mr-content-large {
+      .-mr-container-lg {
         margin-right: -30px;
-        margin-right: var(--content-large-padding-negative);
+        margin-right: var(--container-lg-padding-negative);
+      }
+      @media (min-width: 640px) {
+        .sm\\:w-container-sm { width: 1200px; }
+        .sm\\:min-w-container-sm { min-width: 1200px; }
+        .sm\\:max-w-container-sm { max-width: 1200px; }
+        .sm\\:px-container-sm { padding-left: 15px; padding-right: 15px; }
+        .sm\\:pl-container-sm { padding-left: 15px; }
+        .sm\\:pr-container-sm { padding-right: 15px; }
+        .sm\\:mx-container-sm { margin-left: 15px; margin-right: 15px; }
+        .sm\\:ml-container-sm { margin-left: 15px; }
+        .sm\\:mr-container-sm { margin-right: 15px; }
+        .sm\\:-mx-container-sm { margin-left: -15px; margin-right: -15px; }
+        .sm\\:-ml-container-sm { margin-left: -15px; }
+        .sm\\:-mr-container-sm { margin-right: -15px; }
+        .sm\\:w-container-lg { width: 1400px; }
+        .sm\\:min-w-container-lg { min-width: 1400px; }
+        .sm\\:max-w-container-lg { max-width: 1400px; }
+        .sm\\:px-container-lg {
+          padding-left: 30px;
+          padding-left: var(--container-lg-padding);
+          padding-right: 30px;
+          padding-right: var(--container-lg-padding);
+        }
+        .sm\\:pl-container-lg {
+          padding-left: 30px;
+          padding-left: var(--container-lg-padding);
+        }
+        .sm\\:pr-container-lg {
+          padding-right: 30px;
+          padding-right: var(--container-lg-padding);
+        }
+        .sm\\:mx-container-lg {
+          margin-left: 30px;
+          margin-left: var(--container-lg-padding);
+          margin-right: 30px;
+          margin-right: var(--container-lg-padding);
+        }
+        .sm\\:ml-container-lg {
+          margin-left: 30px;
+          margin-left: var(--container-lg-padding);
+        }
+        .sm\\:mr-container-lg {
+          margin-right: 30px;
+          margin-right: var(--container-lg-padding);
+        }
+        .sm\\:-mx-container-lg {
+          margin-left: -30px;
+          margin-left: var(--container-lg-padding-negative);
+          margin-right: -30px;
+          margin-right: var(--container-lg-padding-negative);
+        }
+        .sm\\:-ml-container-lg {
+          margin-left: -30px;
+          margin-left: var(--container-lg-padding-negative);
+        }
+        .sm\\:-mr-container-lg {
+          margin-right: -30px;
+          margin-right: var(--container-lg-padding-negative);
+        }
       }
     `);
   });
