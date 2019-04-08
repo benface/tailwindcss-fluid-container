@@ -132,7 +132,7 @@ test('the container can be customized', () => {
   });
 });
 
-test('the component prefix can be removed', () => {
+test('the component prefix is customizable', () => {
   return generatePluginCss({
     variants: {
       fluidContainer: [],

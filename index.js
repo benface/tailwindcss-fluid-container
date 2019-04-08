@@ -9,6 +9,8 @@ module.exports = function(options = {}) {
       marginUtilities: true,
       negativeMarginUtilities: true,
     };
+    options = _.merge({}, defaultOptions, options);
+
     const defaultTheme = {
       'default': {
         maxWidth: null,
@@ -19,53 +21,51 @@ module.exports = function(options = {}) {
     const containers = config('theme.fluidContainer', defaultTheme);
     const variants = config('variants.fluidContainer', ['responsive']);
 
-    options = _.merge({}, defaultOptions, options);
-
     _.forEach(containers, function(value, modifier) {
-      const containerName = `container${modifier === 'default' ? '' : `-${modifier}`}`;
       const container = _.defaults({}, value, defaultTheme.default);
-      let containerPadding = container.padding;
-      let containerPaddingNegative = '-' + container.padding;
+      container.name = `container${modifier === 'default' ? '' : `-${modifier}`}`;
+      container.varPadding = container.padding;
+      container.varPaddingNegative = '-' + container.padding;
 
       if (!_.isEmpty(container.responsivePadding)) {
         addBase({
           'html': {
-            [`--${containerName}-padding`]: container.padding,
-            [`--${containerName}-padding-negative`]: `calc(var(--${containerName}-padding) * -1)`,
+            [`--${container.name}-padding`]: container.padding,
+            [`--${container.name}-padding-negative`]: `calc(var(--${container.name}-padding) * -1)`,
           },
         });
         _.forEach(container.responsivePadding, function(padding, screen) {
           addBase({
             [`@screen ${screen}`]: {
               'html': {
-                [`--${containerName}-padding`]: padding,
+                [`--${container.name}-padding`]: padding,
               },
             },
           });
         });
-        containerPadding = [containerPadding, `var(--${containerName}-padding)`];
-        containerPaddingNegative = [containerPaddingNegative, `var(--${containerName}-padding-negative)`];
+        container.varPadding = [container.varPadding, `var(--${container.name}-padding)`];
+        container.varPaddingNegative = [container.varPaddingNegative, `var(--${container.name}-padding-negative)`];
       }
 
       addComponents({
-        [`.${e(`${options.componentPrefix}${containerName}`)}`]: {
+        [`.${e(`${options.componentPrefix}${container.name}`)}`]: {
           marginLeft: 'auto',
           marginRight: 'auto',
           maxWidth: container.maxWidth,
-          paddingLeft: containerPadding,
-          paddingRight: containerPadding,
+          paddingLeft: container.varPadding,
+          paddingRight: container.varPadding,
         },
       });
 
       if (options.widthUtilities && container.maxWidth !== null) {
         addUtilities({
-          [`.${e(`w-${containerName}`)}`]: {
+          [`.${e(`w-${container.name}`)}`]: {
             width: container.maxWidth,
           },
-          [`.${e(`min-w-${containerName}`)}`]: {
+          [`.${e(`min-w-${container.name}`)}`]: {
             minWidth: container.maxWidth,
           },
-          [`.${e(`max-w-${containerName}`)}`]: {
+          [`.${e(`max-w-${container.name}`)}`]: {
             maxWidth: container.maxWidth,
           },
         }, variants);
@@ -73,45 +73,45 @@ module.exports = function(options = {}) {
 
       if (options.paddingUtilities) {
         addUtilities({
-          [`.${e(`px-${containerName}`)}`]: {
-            paddingLeft: containerPadding,
-            paddingRight: containerPadding,
+          [`.${e(`px-${container.name}`)}`]: {
+            paddingLeft: container.varPadding,
+            paddingRight: container.varPadding,
           },
-          [`.${e(`pl-${containerName}`)}`]: {
-            paddingLeft: containerPadding,
+          [`.${e(`pl-${container.name}`)}`]: {
+            paddingLeft: container.varPadding,
           },
-          [`.${e(`pr-${containerName}`)}`]: {
-            paddingRight: containerPadding,
+          [`.${e(`pr-${container.name}`)}`]: {
+            paddingRight: container.varPadding,
           },
         }, variants);
       }
 
       if (options.marginUtilities) {
         addUtilities({
-          [`.${e(`mx-${containerName}`)}`]: {
-            marginLeft: containerPadding,
-            marginRight: containerPadding,
+          [`.${e(`mx-${container.name}`)}`]: {
+            marginLeft: container.varPadding,
+            marginRight: container.varPadding,
           },
-          [`.${e(`ml-${containerName}`)}`]: {
-            marginLeft: containerPadding,
+          [`.${e(`ml-${container.name}`)}`]: {
+            marginLeft: container.varPadding,
           },
-          [`.${e(`mr-${containerName}`)}`]: {
-            marginRight: containerPadding,
+          [`.${e(`mr-${container.name}`)}`]: {
+            marginRight: container.varPadding,
           },
         }, variants);
       }
 
       if (options.negativeMarginUtilities) {
         addUtilities({
-          [`.${e(`-mx-${containerName}`)}`]: {
-            marginLeft: containerPaddingNegative,
-            marginRight: containerPaddingNegative,
+          [`.${e(`-mx-${container.name}`)}`]: {
+            marginLeft: container.varPaddingNegative,
+            marginRight: container.varPaddingNegative,
           },
-          [`.${e(`-ml-${containerName}`)}`]: {
-            marginLeft: containerPaddingNegative,
+          [`.${e(`-ml-${container.name}`)}`]: {
+            marginLeft: container.varPaddingNegative,
           },
-          [`.${e(`-mr-${containerName}`)}`]: {
-            marginRight: containerPaddingNegative,
+          [`.${e(`-mr-${container.name}`)}`]: {
+            marginRight: container.varPaddingNegative,
           },
         }, variants);
       }
