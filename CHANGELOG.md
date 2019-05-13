@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project mostly adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2019-05-13
+
+### Changed since 2.0.0-beta.1
+- Added support for global variants thanks to Tailwind’s `variants()` helper function
+
+### Added since 1.x
+- Tailwind 1.0.0 compatibility
+- Added options to enable/disable the utilities
+
+### Changed since 1.x
+- Most of the config options have been moved to the `theme` and `variants` objects in your Tailwind config (see `README` for more info)
+- Container class names now always include the word `container`; you can however customize the suffix (the keys in the `theme.fluidContainer` object, where `default` means no suffix) and the component prefix (which still defaults to `c-`)
+
 ## [2.0.0-beta.1] - 2019-04-07
 
 ### Added
@@ -19,6 +32,7 @@ and this project mostly adheres to [Semantic Versioning](https://semver.org/spec
 
 Initial release
 
-[Unreleased]: https://github.com/benface/tailwindcss-fluid-container/compare/v2.0.0-beta.1...HEAD
+[Unreleased]: https://github.com/benface/tailwindcss-fluid-container/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/benface/tailwindcss-fluid-container/compare/v2.0.0-beta.1...v2.0.0
 [2.0.0-beta.1]: https://github.com/benface/tailwindcss-fluid-container/compare/v1.0.0...v2.0.0-beta.1
 [1.0.0]: https://github.com/benface/tailwindcss-fluid-container/releases/tag/v1.0.0

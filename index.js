@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 module.exports = function(options = {}) {
-  return ({ config, e, addBase, addComponents, addUtilities }) => {
+  return ({ config, e, variants, addBase, addComponents, addUtilities }) => {
     const defaultOptions = {
       componentPrefix: 'c-',
       widthUtilities: true,
@@ -19,7 +19,7 @@ module.exports = function(options = {}) {
       },
     };
     const containers = config('theme.fluidContainer', defaultTheme);
-    const variants = config('variants.fluidContainer', ['responsive']);
+    const utilityVariants = variants('fluidContainer', ['responsive']);
 
     _.forEach(containers, function(value, modifier) {
       const container = _.defaults({}, value, defaultTheme.default);
@@ -68,7 +68,7 @@ module.exports = function(options = {}) {
           [`.${e(`max-w-${container.name}`)}`]: {
             maxWidth: container.maxWidth,
           },
-        }, variants);
+        }, utilityVariants);
       }
 
       if (options.paddingUtilities) {
@@ -83,7 +83,7 @@ module.exports = function(options = {}) {
           [`.${e(`pr-${container.name}`)}`]: {
             paddingRight: container.varPadding,
           },
-        }, variants);
+        }, utilityVariants);
       }
 
       if (options.marginUtilities) {
@@ -98,7 +98,7 @@ module.exports = function(options = {}) {
           [`.${e(`mr-${container.name}`)}`]: {
             marginRight: container.varPadding,
           },
-        }, variants);
+        }, utilityVariants);
       }
 
       if (options.negativeMarginUtilities) {
@@ -113,7 +113,7 @@ module.exports = function(options = {}) {
           [`.${e(`-mr-${container.name}`)}`]: {
             marginRight: container.varPaddingNegative,
           },
-        }, variants);
+        }, utilityVariants);
       }
     });
   };
