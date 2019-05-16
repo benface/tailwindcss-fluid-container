@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 module.exports = function(options = {}) {
-  return ({ config, e, variants, addBase, addComponents, addUtilities }) => {
+  return ({ theme, variants, e, addBase, addComponents, addUtilities }) => {
     const defaultOptions = {
       componentPrefix: 'c-',
       widthUtilities: true,
@@ -9,20 +9,22 @@ module.exports = function(options = {}) {
       marginUtilities: true,
       negativeMarginUtilities: true,
     };
-    options = _.merge({}, defaultOptions, options);
+    options = _.defaults({}, options, defaultOptions);
 
-    const defaultTheme = {
+    const defaultContainerTheme = {
       'default': {
         maxWidth: null,
         padding: '15px',
         responsivePadding: {},
       },
     };
-    const containers = config('theme.fluidContainer', defaultTheme);
-    const utilityVariants = variants('fluidContainer', ['responsive']);
+    const defaultContainerVariants = ['responsive'];
 
-    _.forEach(containers, function(value, modifier) {
-      const container = _.defaults({}, value, defaultTheme.default);
+    const containerTheme = theme('fluidContainer', defaultContainerTheme);
+    const containerVariants = variants('fluidContainer', defaultContainerVariants);
+
+    _.forEach(containerTheme, function(value, modifier) {
+      const container = _.defaults({}, value, defaultContainerTheme.default);
       container.name = `container${modifier === 'default' ? '' : `-${modifier}`}`;
       container.varPadding = container.padding;
       container.varPaddingNegative = '-' + container.padding;
@@ -68,7 +70,7 @@ module.exports = function(options = {}) {
           [`.${e(`max-w-${container.name}`)}`]: {
             maxWidth: container.maxWidth,
           },
-        }, utilityVariants);
+        }, containerVariants);
       }
 
       if (options.paddingUtilities) {
@@ -83,7 +85,7 @@ module.exports = function(options = {}) {
           [`.${e(`pr-${container.name}`)}`]: {
             paddingRight: container.varPadding,
           },
-        }, utilityVariants);
+        }, containerVariants);
       }
 
       if (options.marginUtilities) {
@@ -98,7 +100,7 @@ module.exports = function(options = {}) {
           [`.${e(`mr-${container.name}`)}`]: {
             marginRight: container.varPadding,
           },
-        }, utilityVariants);
+        }, containerVariants);
       }
 
       if (options.negativeMarginUtilities) {
@@ -113,7 +115,7 @@ module.exports = function(options = {}) {
           [`.${e(`-mr-${container.name}`)}`]: {
             marginRight: container.varPaddingNegative,
           },
-        }, utilityVariants);
+        }, containerVariants);
       }
     });
   };
