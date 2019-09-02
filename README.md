@@ -17,7 +17,10 @@ npm install tailwindcss-fluid-container
     },
     fluidContainer: {
       'default': {
-        maxWidth: '1200px',   // defaults to null (no maximum width)
+        maxWidth: '800px',   // defaults to null (no max width)
+        responsiveMaxWidth: { // defaults to {}
+          'lg': '1200px',     // at screen 'lg', the max width will change to 1200px
+        },
         padding: '15px',      // defaults to '15px'
         responsivePadding: {  // defaults to {}
           'sm': '30px',       // at screen 'sm', the padding will change to 30px
@@ -43,10 +46,16 @@ npm install tailwindcss-fluid-container
 The above configuration would generate the following CSS:
 
 ```css
-/* custom property definitions (only because `responsivePadding` is used) */
+/* custom property definitions (only when "responsivePadding" and/or "responsiveMaxWidth" are used) */
 html {
+  --container-max-width: 800px;
   --container-padding: 15px;
   --container-padding-negative: calc(var(--container-padding) * -1);
+}
+@media (min-width: 1024px) {
+  html {
+    --container-max-width: 1200px;
+  }
 }
 @media (min-width: 640px) {
   html {
@@ -58,7 +67,8 @@ html {
 .c-container {
   margin-left: auto;
   margin-right: auto;
-  max-width: 1200px;
+  max-width: 800px;
+  max-width: var(--container-max-width);
   padding-left: 15px;
   padding-left: var(--container-padding);
   padding-right: 15px;
@@ -67,13 +77,16 @@ html {
 
 /* a bunch of utilities to help you align things with the container */
 .w-container {
-  width: 1200px;
+  width: 800px;
+  width: var(--container-max-width);
 }
 .min-w-container {
-  min-width: 1200px;
+  min-width: 800px;
+  min-width: var(--container-max-width);
 }
 .max-w-container {
-  max-width: 1200px;
+  max-width: 800px;
+  max-width: var(--container-max-width);
 }
 .px-container {
   padding-left: 15px;

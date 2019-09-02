@@ -14,6 +14,7 @@ module.exports = function(options = {}) {
     const defaultContainerTheme = {
       'default': {
         maxWidth: null,
+        responsiveMaxWidth: {},
         padding: '15px',
         responsivePadding: {},
       },
@@ -26,16 +27,36 @@ module.exports = function(options = {}) {
     _.forEach(containerTheme, function(value, modifier) {
       const container = _.defaults({}, value, defaultContainerTheme.default);
       container.name = `container${modifier === 'default' ? '' : `-${modifier}`}`;
+      container.varMaxWidth = container.maxWidth;
       container.varPadding = container.padding;
       container.varPaddingNegative = '-' + container.padding;
 
-      if (!_.isEmpty(container.responsivePadding)) {
+      if (!_.isEmpty(container.responsiveMaxWidth) || !_.isEmpty(container.responsivePadding)) {
         addBase({
           'html': {
-            [`--${container.name}-padding`]: container.padding,
-            [`--${container.name}-padding-negative`]: `calc(var(--${container.name}-padding) * -1)`,
+            [`--${container.name}-max-width`]: _.isEmpty(container.responsiveMaxWidth) ? null : container.maxWidth,
+            [`--${container.name}-padding`]: _.isEmpty(container.responsivePadding) ? null : container.padding,
+            [`--${container.name}-padding-negative`]: _.isEmpty(container.responsivePadding) ? null : `calc(var(--${container.name}-padding) * -1)`,
           },
         });
+      }
+
+      if (!_.isEmpty(container.responsiveMaxWidth)) {
+        container.varMaxWidth = [container.varMaxWidth, `var(--${container.name}-max-width)`];
+        _.forEach(container.responsiveMaxWidth, function(maxWidth, screen) {
+          addBase({
+            [`@screen ${screen}`]: {
+              'html': {
+                [`--${container.name}-max-width`]: maxWidth,
+              },
+            },
+          });
+        });
+      }
+      
+      if (!_.isEmpty(container.responsivePadding)) {
+        container.varPadding = [container.varPadding, `var(--${container.name}-padding)`];
+        container.varPaddingNegative = [container.varPaddingNegative, `var(--${container.name}-padding-negative)`];
         _.forEach(container.responsivePadding, function(padding, screen) {
           addBase({
             [`@screen ${screen}`]: {
@@ -45,77 +66,77 @@ module.exports = function(options = {}) {
             },
           });
         });
-        container.varPadding = [container.varPadding, `var(--${container.name}-padding)`];
-        container.varPaddingNegative = [container.varPaddingNegative, `var(--${container.name}-padding-negative)`];
       }
 
       addComponents({
         [`.${e(`${options.componentPrefix}${container.name}`)}`]: {
           marginLeft: 'auto',
           marginRight: 'auto',
-          maxWidth: container.maxWidth,
+          maxWidth: container.varMaxWidth,
           paddingLeft: container.varPadding,
           paddingRight: container.varPadding,
         },
       });
 
-      if (options.widthUtilities && container.maxWidth !== null) {
+      if (options.widthUtilities && container.varMaxWidth !== null) {
         addUtilities({
           [`.${e(`w-${container.name}`)}`]: {
-            width: container.maxWidth,
+            width: container.varMaxWidth,
           },
           [`.${e(`min-w-${container.name}`)}`]: {
-            minWidth: container.maxWidth,
+            minWidth: container.varMaxWidth,
           },
           [`.${e(`max-w-${container.name}`)}`]: {
-            maxWidth: container.maxWidth,
+            maxWidth: container.varMaxWidth,
           },
         }, containerVariants);
       }
 
-      if (options.paddingUtilities) {
-        addUtilities({
-          [`.${e(`px-${container.name}`)}`]: {
-            paddingLeft: container.varPadding,
-            paddingRight: container.varPadding,
-          },
-          [`.${e(`pl-${container.name}`)}`]: {
-            paddingLeft: container.varPadding,
-          },
-          [`.${e(`pr-${container.name}`)}`]: {
-            paddingRight: container.varPadding,
-          },
-        }, containerVariants);
-      }
+      if (container.varPadding !== null) {
+        if (options.paddingUtilities) {
+          addUtilities({
+            [`.${e(`px-${container.name}`)}`]: {
+              paddingLeft: container.varPadding,
+              paddingRight: container.varPadding,
+            },
+            [`.${e(`pl-${container.name}`)}`]: {
+              paddingLeft: container.varPadding,
+            },
+            [`.${e(`pr-${container.name}`)}`]: {
+              paddingRight: container.varPadding,
+            },
+          }, containerVariants);
+        }
 
-      if (options.marginUtilities) {
-        addUtilities({
-          [`.${e(`mx-${container.name}`)}`]: {
-            marginLeft: container.varPadding,
-            marginRight: container.varPadding,
-          },
-          [`.${e(`ml-${container.name}`)}`]: {
-            marginLeft: container.varPadding,
-          },
-          [`.${e(`mr-${container.name}`)}`]: {
-            marginRight: container.varPadding,
-          },
-        }, containerVariants);
-      }
+        if (options.marginUtilities) {
+          addUtilities({
+            [`.${e(`mx-${container.name}`)}`]: {
+              marginLeft: container.varPadding,
+              marginRight: container.varPadding,
+            },
+            [`.${e(`ml-${container.name}`)}`]: {
+              marginLeft: container.varPadding,
+            },
+            [`.${e(`mr-${container.name}`)}`]: {
+              marginRight: container.varPadding,
+            },
+          }, containerVariants);
+        }
 
-      if (options.negativeMarginUtilities) {
-        addUtilities({
-          [`.${e(`-mx-${container.name}`)}`]: {
-            marginLeft: container.varPaddingNegative,
-            marginRight: container.varPaddingNegative,
-          },
-          [`.${e(`-ml-${container.name}`)}`]: {
-            marginLeft: container.varPaddingNegative,
-          },
-          [`.${e(`-mr-${container.name}`)}`]: {
-            marginRight: container.varPaddingNegative,
-          },
-        }, containerVariants);
+        if (options.negativeMarginUtilities) {
+          addUtilities({
+            [`.${e(`-mx-${container.name}`)}`]: {
+              marginLeft: container.varPaddingNegative,
+              marginRight: container.varPaddingNegative,
+            },
+            [`.${e(`-ml-${container.name}`)}`]: {
+              marginLeft: container.varPaddingNegative,
+            },
+            [`.${e(`-mr-${container.name}`)}`]: {
+              marginRight: container.varPaddingNegative,
+            },
+          }, containerVariants);
+        }
       }
     });
   };
