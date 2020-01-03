@@ -669,7 +669,7 @@ test('multiple containers can be generated', () => {
           responsivePadding: {
             'sm': '10vw',
           },
-        }
+        },
       },
     },
   }, {
@@ -817,6 +817,61 @@ test('multiple containers can be generated', () => {
           margin-right: var(--container-lg-padding-negative);
         }
       }
+    `);
+  });
+});
+
+test('containers can be extended', () => {
+  return generatePluginCss({
+    theme: {
+      extend: {
+        fluidContainer: {
+          'constrained': {
+            maxWidth: '1400px',
+            padding: '30px',
+          },
+        },
+      },
+    },
+    variants: {
+      fluidContainer: [],
+    },
+  }).then(css => {
+    expect(css).toMatchCss(`
+      .c-container {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .c-container-constrained {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1400px;
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+      .px-container { padding-left: 15px; padding-right: 15px; }
+      .pl-container { padding-left: 15px; }
+      .pr-container { padding-right: 15px; }
+      .mx-container { margin-left: 15px; margin-right: 15px; }
+      .ml-container { margin-left: 15px; }
+      .mr-container { margin-right: 15px; }
+      .-mx-container { margin-left: -15px; margin-right: -15px; }
+      .-ml-container { margin-left: -15px; }
+      .-mr-container { margin-right: -15px; }
+      .w-container-constrained { width: 1400px; }
+      .min-w-container-constrained { min-width: 1400px; }
+      .max-w-container-constrained { max-width: 1400px; }
+      .px-container-constrained { padding-left: 30px; padding-right: 30px; }
+      .pl-container-constrained { padding-left: 30px; }
+      .pr-container-constrained { padding-right: 30px; }
+      .mx-container-constrained { margin-left: 30px; margin-right: 30px; }
+      .ml-container-constrained { margin-left: 30px; }
+      .mr-container-constrained { margin-right: 30px; }
+      .-mx-container-constrained { margin-left: -30px; margin-right: -30px; }
+      .-ml-container-constrained { margin-left: -30px; }
+      .-mr-container-constrained { margin-right: -30px; }
     `);
   });
 });
