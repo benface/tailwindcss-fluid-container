@@ -149,7 +149,7 @@ You can also generate multiple containers and name them, like this:
     },
   },
   plugins: [
-    require('tailwindcss-fluid-container')(),
+    require('tailwindcss-fluid-container'),
   ],
 }
 ```
