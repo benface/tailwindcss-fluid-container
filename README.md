@@ -17,7 +17,7 @@ module.exports = {
     },
     fluidContainer: {
       'default': {
-        maxWidth: '800px',   // defaults to null (no max width)
+        maxWidth: '800px',    // defaults to null (no max width)
         responsiveMaxWidth: { // defaults to {}
           'lg': '1200px',     // at screen 'lg', the max width will change to 1200px
         },
@@ -33,10 +33,10 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-fluid-container')({
-      componentPrefix: 'c-',  // defaults to 'c-'
-      widthUtilities: true,   // defaults to true
-      paddingUtilities: true, // defaults to true
-      marginUtilities: true,  // defaults to true
+      componentPrefix: 'c-',          // defaults to 'c-'
+      widthUtilities: true,           // defaults to true
+      paddingUtilities: true,         // defaults to true
+      marginUtilities: true,          // defaults to true
       negativeMarginUtilities: true,  // defaults to true
     }),
   ],

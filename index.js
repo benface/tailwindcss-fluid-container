@@ -20,6 +20,13 @@ module.exports = plugin.withOptions(function(options = {}) {
   return function({ theme, variants, e, addBase, addComponents, addUtilities }) {
     options = _.defaults({}, options, defaultOptions);
 
+    const mediaQuery = function(screen) {
+      if (theme(`screens.${screen}`)) {
+        return `@screen ${screen}`;
+      }
+      return `@media (min-width: ${screen})`;
+    };
+
     const containerVariants = variants('fluidContainer');
 
     _.forEach(theme('fluidContainer'), function(value, modifier) {
@@ -43,7 +50,7 @@ module.exports = plugin.withOptions(function(options = {}) {
         container.varMaxWidth = [container.varMaxWidth, `var(--${container.name}-max-width)`];
         _.forEach(container.responsiveMaxWidth, function(maxWidth, screen) {
           addBase({
-            [`@screen ${screen}`]: {
+            [mediaQuery(screen)]: {
               'html': {
                 [`--${container.name}-max-width`]: maxWidth,
               },
@@ -57,7 +64,7 @@ module.exports = plugin.withOptions(function(options = {}) {
         container.varPaddingNegative = [container.varPaddingNegative, `var(--${container.name}-padding-negative)`];
         _.forEach(container.responsivePadding, function(padding, screen) {
           addBase({
-            [`@screen ${screen}`]: {
+            [mediaQuery(screen)]: {
               'html': {
                 [`--${container.name}-padding`]: padding,
               },

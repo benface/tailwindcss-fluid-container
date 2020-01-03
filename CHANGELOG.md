@@ -7,6 +7,9 @@ and this project mostly adheres to [Semantic Versioning](https://semver.org/spec
 
 ## [3.0.0] - XXXX-XX-XX
 
+### Added
+- Arbitrary screen sizes that don’t exist in the theme (e.g. `400px`) are now allowed in `responsiveMaxWidth` and `responsivePadding`
+
 ### Changed
 - Changed to use Tailwind 1.2’s new plugin definition syntax
 

@@ -149,85 +149,6 @@ test('the component prefix is customizable', () => {
   });
 });
 
-test('the padding can be responsive', () => {
-  return generatePluginCss({
-    theme: {
-      fluidContainer: {
-        'default': {
-          responsivePadding: {
-            'sm': '30px',
-          },
-        },
-      },
-    },
-    variants: {
-      fluidContainer: [],
-    },
-  }).then(css => {
-    expect(css).toMatchCss(`
-      html {
-        --container-padding: 15px;
-        --container-padding-negative: calc(var(--container-padding) * -1);
-      }
-      @media (min-width: 640px) {
-        html {
-          --container-padding: 30px;
-        }
-      }
-      .c-container {
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 15px;
-        padding-left: var(--container-padding);
-        padding-right: 15px;
-        padding-right: var(--container-padding);
-      }
-      .px-container {
-        padding-left: 15px;
-        padding-left: var(--container-padding);
-        padding-right: 15px;
-        padding-right: var(--container-padding);
-      }
-      .pl-container {
-        padding-left: 15px;
-        padding-left: var(--container-padding);
-      }
-      .pr-container {
-        padding-right: 15px;
-        padding-right: var(--container-padding);
-      }
-      .mx-container {
-        margin-left: 15px;
-        margin-left: var(--container-padding);
-        margin-right: 15px;
-        margin-right: var(--container-padding);
-      }
-      .ml-container {
-        margin-left: 15px;
-        margin-left: var(--container-padding);
-      }
-      .mr-container {
-        margin-right: 15px;
-        margin-right: var(--container-padding);
-      }
-      .-mx-container {
-        margin-left: -15px;
-        margin-left: var(--container-padding-negative);
-        margin-right: -15px;
-        margin-right: var(--container-padding-negative);
-      }
-      .-ml-container {
-        margin-left: -15px;
-        margin-left: var(--container-padding-negative);
-      }
-      .-mr-container {
-        margin-right: -15px;
-        margin-right: var(--container-padding-negative);
-      }
-    `);
-  });
-});
-
 test('the max width can be responsive', () => {
   return generatePluginCss({
     theme: {
@@ -307,7 +228,86 @@ test('the max width can be responsive', () => {
   });
 });
 
-test('both the padding and the max width can be responsive at the same time', () => {
+test('the padding can be responsive', () => {
+  return generatePluginCss({
+    theme: {
+      fluidContainer: {
+        'default': {
+          responsivePadding: {
+            'sm': '30px',
+          },
+        },
+      },
+    },
+    variants: {
+      fluidContainer: [],
+    },
+  }).then(css => {
+    expect(css).toMatchCss(`
+      html {
+        --container-padding: 15px;
+        --container-padding-negative: calc(var(--container-padding) * -1);
+      }
+      @media (min-width: 640px) {
+        html {
+          --container-padding: 30px;
+        }
+      }
+      .c-container {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-left: var(--container-padding);
+        padding-right: 15px;
+        padding-right: var(--container-padding);
+      }
+      .px-container {
+        padding-left: 15px;
+        padding-left: var(--container-padding);
+        padding-right: 15px;
+        padding-right: var(--container-padding);
+      }
+      .pl-container {
+        padding-left: 15px;
+        padding-left: var(--container-padding);
+      }
+      .pr-container {
+        padding-right: 15px;
+        padding-right: var(--container-padding);
+      }
+      .mx-container {
+        margin-left: 15px;
+        margin-left: var(--container-padding);
+        margin-right: 15px;
+        margin-right: var(--container-padding);
+      }
+      .ml-container {
+        margin-left: 15px;
+        margin-left: var(--container-padding);
+      }
+      .mr-container {
+        margin-right: 15px;
+        margin-right: var(--container-padding);
+      }
+      .-mx-container {
+        margin-left: -15px;
+        margin-left: var(--container-padding-negative);
+        margin-right: -15px;
+        margin-right: var(--container-padding-negative);
+      }
+      .-ml-container {
+        margin-left: -15px;
+        margin-left: var(--container-padding-negative);
+      }
+      .-mr-container {
+        margin-right: -15px;
+        margin-right: var(--container-padding-negative);
+      }
+    `);
+  });
+});
+
+test('both the max width and the padding can be responsive at the same time', () => {
   return generatePluginCss({
     theme: {
       fluidContainer: {
@@ -336,6 +336,163 @@ test('both the padding and the max width can be responsive at the same time', ()
         }
       }
       @media (min-width: 640px) {
+        html {
+          --container-padding: 30px;
+        }
+      }
+      .c-container {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 800px;
+        max-width: var(--container-max-width);
+        padding-left: 20px;
+        padding-left: var(--container-padding);
+        padding-right: 20px;
+        padding-right: var(--container-padding);
+      }
+      .w-container {
+        width: 800px;
+        width: var(--container-max-width);
+      }
+      .min-w-container {
+        min-width: 800px;
+        min-width: var(--container-max-width);
+      }
+      .max-w-container {
+        max-width: 800px;
+        max-width: var(--container-max-width);
+      }
+      .px-container {
+        padding-left: 20px;
+        padding-left: var(--container-padding);
+        padding-right: 20px;
+        padding-right: var(--container-padding);
+      }
+      .pl-container {
+        padding-left: 20px;
+        padding-left: var(--container-padding);
+      }
+      .pr-container {
+        padding-right: 20px;
+        padding-right: var(--container-padding);
+      }
+      .mx-container {
+        margin-left: 20px;
+        margin-left: var(--container-padding);
+        margin-right: 20px;
+        margin-right: var(--container-padding);
+      }
+      .ml-container {
+        margin-left: 20px;
+        margin-left: var(--container-padding);
+      }
+      .mr-container {
+        margin-right: 20px;
+        margin-right: var(--container-padding);
+      }
+      .-mx-container {
+        margin-left: -20px;
+        margin-left: var(--container-padding-negative);
+        margin-right: -20px;
+        margin-right: var(--container-padding-negative);
+      }
+      .-ml-container {
+        margin-left: -20px;
+        margin-left: var(--container-padding-negative);
+      }
+      .-mr-container {
+        margin-right: -20px;
+        margin-right: var(--container-padding-negative);
+      }
+      @media (min-width: 640px) {
+        .sm\\:w-container {
+          width: 800px;
+          width: var(--container-max-width);
+        }
+        .sm\\:min-w-container {
+          min-width: 800px;
+          min-width: var(--container-max-width);
+        }
+        .sm\\:max-w-container {
+          max-width: 800px;
+          max-width: var(--container-max-width);
+        }
+        .sm\\:px-container {
+          padding-left: 20px;
+          padding-left: var(--container-padding);
+          padding-right: 20px;
+          padding-right: var(--container-padding);
+        }
+        .sm\\:pl-container {
+          padding-left: 20px;
+          padding-left: var(--container-padding);
+        }
+        .sm\\:pr-container {
+          padding-right: 20px;
+          padding-right: var(--container-padding);
+        }
+        .sm\\:mx-container {
+          margin-left: 20px;
+          margin-left: var(--container-padding);
+          margin-right: 20px;
+          margin-right: var(--container-padding);
+        }
+        .sm\\:ml-container {
+          margin-left: 20px;
+          margin-left: var(--container-padding);
+        }
+        .sm\\:mr-container {
+          margin-right: 20px;
+          margin-right: var(--container-padding);
+        }
+        .sm\\:-mx-container {
+          margin-left: -20px;
+          margin-left: var(--container-padding-negative);
+          margin-right: -20px;
+          margin-right: var(--container-padding-negative);
+        }
+        .sm\\:-ml-container {
+          margin-left: -20px;
+          margin-left: var(--container-padding-negative);
+        }
+        .sm\\:-mr-container {
+          margin-right: -20px;
+          margin-right: var(--container-padding-negative);
+        }
+      }
+    `);
+  });
+});
+
+test('arbitrary screen sizes are allowed in responsive max width and padding', () => {
+  return generatePluginCss({
+    theme: {
+      fluidContainer: {
+        'default': {
+          maxWidth: '800px',
+          responsiveMaxWidth: {
+            '400px': '1200px',
+          },
+          padding: '20px',
+          responsivePadding: {
+            '800px': '30px',
+          },
+        },
+      },
+    },
+  }).then(css => {
+    expect(css).toMatchCss(`
+      html {
+        --container-max-width: 800px;
+        --container-padding: 20px;
+        --container-padding-negative: calc(var(--container-padding) * -1);
+      }
+      @media (min-width: 400px) {
+        html {
+          --container-max-width: 1200px;
+        }
+      }
+      @media (min-width: 800px) {
         html {
           --container-padding: 30px;
         }
