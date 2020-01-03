@@ -1,31 +1,29 @@
+const plugin = require('tailwindcss/plugin');
 const _ = require('lodash');
 
-module.exports = function(options = {}) {
-  return ({ theme, variants, e, addBase, addComponents, addUtilities }) => {
-    const defaultOptions = {
-      componentPrefix: 'c-',
-      widthUtilities: true,
-      paddingUtilities: true,
-      marginUtilities: true,
-      negativeMarginUtilities: true,
-    };
+const defaultOptions = {
+  componentPrefix: 'c-',
+  widthUtilities: true,
+  paddingUtilities: true,
+  marginUtilities: true,
+  negativeMarginUtilities: true,
+};
+
+const defaultContainerOptions = {
+  maxWidth: null,
+  responsiveMaxWidth: {},
+  padding: '15px',
+  responsivePadding: {},
+};
+
+module.exports = plugin.withOptions(function(options = {}) {
+  return function({ theme, variants, e, addBase, addComponents, addUtilities }) {
     options = _.defaults({}, options, defaultOptions);
 
-    const defaultContainerTheme = {
-      'default': {
-        maxWidth: null,
-        responsiveMaxWidth: {},
-        padding: '15px',
-        responsivePadding: {},
-      },
-    };
-    const defaultContainerVariants = ['responsive'];
+    const containerVariants = variants('fluidContainer');
 
-    const containerTheme = theme('fluidContainer', defaultContainerTheme);
-    const containerVariants = variants('fluidContainer', defaultContainerVariants);
-
-    _.forEach(containerTheme, function(value, modifier) {
-      const container = _.defaults({}, value, defaultContainerTheme.default);
+    _.forEach(theme('fluidContainer'), function(value, modifier) {
+      const container = _.defaults({}, value, defaultContainerOptions);
       container.name = `container${modifier === 'default' ? '' : `-${modifier}`}`;
       container.varMaxWidth = container.maxWidth;
       container.varPadding = container.padding;
@@ -140,4 +138,15 @@ module.exports = function(options = {}) {
       }
     });
   };
-};
+}, function() {
+  return {
+    theme: {
+      fluidContainer: {
+        'default': defaultContainerOptions,
+      },
+    },
+    variants: {
+      fluidContainer: ['responsive'],
+    },
+  };
+});

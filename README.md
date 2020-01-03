@@ -10,7 +10,7 @@ npm install tailwindcss-fluid-container
 
 ```js
 // tailwind.config.js
-{
+module.exports = {
   theme: {
     screens: {
       'sm': '640px',
@@ -40,7 +40,7 @@ npm install tailwindcss-fluid-container
       negativeMarginUtilities: true,  // defaults to true
     }),
   ],
-}
+};
 ```
 
 The above configuration would generate the following CSS:
