@@ -41,18 +41,21 @@ test('the plugin generates a component, some utilities, and responsive variants 
         padding-left: 15px;
         padding-right: 15px;
       }
+      .p-container { padding: 15px; }
       .py-container { padding-top: 15px; padding-bottom: 15px; }
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pt-container { padding-top: 15px; }
       .pr-container { padding-right: 15px; }
       .pb-container { padding-bottom: 15px; }
       .pl-container { padding-left: 15px; }
+      .m-container { margin: 15px; }
       .my-container { margin-top: 15px; margin-bottom: 15px; }
       .mx-container { margin-left: 15px; margin-right: 15px; }
       .mt-container { margin-top: 15px; }
       .mr-container { margin-right: 15px; }
       .mb-container { margin-bottom: 15px; }
       .ml-container { margin-left: 15px; }
+      .-m-container { margin: -15px; }
       .-my-container { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-mt-container { margin-top: -15px; }
@@ -60,18 +63,21 @@ test('the plugin generates a component, some utilities, and responsive variants 
       .-mb-container { margin-bottom: -15px; }
       .-ml-container { margin-left: -15px; }
       @media (min-width: 640px) {
+        .sm\\:p-container { padding: 15px; }
         .sm\\:py-container { padding-top: 15px; padding-bottom: 15px; }
         .sm\\:px-container { padding-left: 15px; padding-right: 15px; }
         .sm\\:pt-container { padding-top: 15px; }
         .sm\\:pr-container { padding-right: 15px; }
         .sm\\:pb-container { padding-bottom: 15px; }
         .sm\\:pl-container { padding-left: 15px; }
+        .sm\\:m-container { margin: 15px; }
         .sm\\:my-container { margin-top: 15px; margin-bottom: 15px; }
         .sm\\:mx-container { margin-left: 15px; margin-right: 15px; }
         .sm\\:mt-container { margin-top: 15px; }
         .sm\\:mr-container { margin-right: 15px; }
         .sm\\:mb-container { margin-bottom: 15px; }
         .sm\\:ml-container { margin-left: 15px; }
+        .sm\\:-m-container { margin: -15px; }
         .sm\\:-my-container { margin-top: -15px; margin-bottom: -15px; }
         .sm\\:-mx-container { margin-left: -15px; margin-right: -15px; }
         .sm\\:-mt-container { margin-top: -15px; }
@@ -126,18 +132,21 @@ test('the container can be customized', () => {
       .w-container { width: 1200px; }
       .min-w-container { min-width: 1200px; }
       .max-w-container { max-width: 1200px; }
+      .p-container { padding: 30px; }
       .py-container { padding-top: 30px; padding-bottom: 30px; }
       .px-container { padding-left: 30px; padding-right: 30px; }
       .pt-container { padding-top: 30px; }
       .pr-container { padding-right: 30px; }
       .pb-container { padding-bottom: 30px; }
       .pl-container { padding-left: 30px; }
+      .m-container { margin: 30px; }
       .my-container { margin-top: 30px; margin-bottom: 30px; }
       .mx-container { margin-left: 30px; margin-right: 30px; }
       .mt-container { margin-top: 30px; }
       .mr-container { margin-right: 30px; }
       .mb-container { margin-bottom: 30px; }
       .ml-container { margin-left: 30px; }
+      .-m-container { margin: -30px; }
       .-my-container { margin-top: -30px; margin-bottom: -30px; }
       .-mx-container { margin-left: -30px; margin-right: -30px; }
       .-mt-container { margin-top: -30px; }
@@ -163,18 +172,21 @@ test('the component prefix is customizable', () => {
         padding-left: 15px;
         padding-right: 15px;
       }
+      .p-container { padding: 15px; }
       .py-container { padding-top: 15px; padding-bottom: 15px; }
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pt-container { padding-top: 15px; }
       .pr-container { padding-right: 15px; }
       .pb-container { padding-bottom: 15px; }
       .pl-container { padding-left: 15px; }
+      .m-container { margin: 15px; }
       .my-container { margin-top: 15px; margin-bottom: 15px; }
       .mx-container { margin-left: 15px; margin-right: 15px; }
       .mt-container { margin-top: 15px; }
       .mr-container { margin-right: 15px; }
       .mb-container { margin-bottom: 15px; }
       .ml-container { margin-left: 15px; }
+      .-m-container { margin: -15px; }
       .-my-container { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-mt-container { margin-top: -15px; }
@@ -230,18 +242,21 @@ test('the max width can be responsive', () => {
         max-width: 800px;
         max-width: var(--container-max-width);
       }
+      .p-container { padding: 15px; }
       .py-container { padding-top: 15px; padding-bottom: 15px; }
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pt-container { padding-top: 15px; }
       .pr-container { padding-right: 15px; }
       .pb-container { padding-bottom: 15px; }
       .pl-container { padding-left: 15px; }
+      .m-container { margin: 15px; }
       .my-container { margin-top: 15px; margin-bottom: 15px; }
       .mx-container { margin-left: 15px; margin-right: 15px; }
       .mt-container { margin-top: 15px; }
       .mr-container { margin-right: 15px; }
       .mb-container { margin-bottom: 15px; }
       .ml-container { margin-left: 15px; }
+      .-m-container { margin: -15px; }
       .-my-container { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-mt-container { margin-top: -15px; }
@@ -285,6 +300,10 @@ test('the padding can be responsive', () => {
         padding-right: 15px;
         padding-right: var(--container-padding);
       }
+      .p-container {
+        padding: 15px;
+        padding: var(--container-padding);
+      }
       .py-container {
         padding-top: 15px;
         padding-top: var(--container-padding);
@@ -313,6 +332,10 @@ test('the padding can be responsive', () => {
         padding-left: 15px;
         padding-left: var(--container-padding);
       }
+      .m-container {
+        margin: 15px;
+        margin: var(--container-padding);
+      }
       .my-container {
         margin-top: 15px;
         margin-top: var(--container-padding);
@@ -340,6 +363,10 @@ test('the padding can be responsive', () => {
       .ml-container {
         margin-left: 15px;
         margin-left: var(--container-padding);
+      }
+      .-m-container {
+        margin: -15px;
+        margin: var(--container-padding-negative);
       }
       .-my-container {
         margin-top: -15px;
@@ -428,6 +455,10 @@ test('both the max width and the padding can be responsive at the same time', ()
         max-width: 800px;
         max-width: var(--container-max-width);
       }
+      .p-container {
+        padding: 20px;
+        padding: var(--container-padding);
+      }
       .py-container {
         padding-top: 20px;
         padding-top: var(--container-padding);
@@ -456,6 +487,10 @@ test('both the max width and the padding can be responsive at the same time', ()
         padding-left: 20px;
         padding-left: var(--container-padding);
       }
+      .m-container {
+        margin: 20px;
+        margin: var(--container-padding);
+      }
       .my-container {
         margin-top: 20px;
         margin-top: var(--container-padding);
@@ -483,6 +518,10 @@ test('both the max width and the padding can be responsive at the same time', ()
       .ml-container {
         margin-left: 20px;
         margin-left: var(--container-padding);
+      }
+      .-m-container {
+        margin: -20px;
+        margin: var(--container-padding-negative);
       }
       .-my-container {
         margin-top: -20px;
@@ -525,6 +564,10 @@ test('both the max width and the padding can be responsive at the same time', ()
           max-width: 800px;
           max-width: var(--container-max-width);
         }
+        .sm\\:p-container {
+          padding: 20px;
+          padding: var(--container-padding);
+        }
         .sm\\:py-container {
           padding-top: 20px;
           padding-top: var(--container-padding);
@@ -553,6 +596,10 @@ test('both the max width and the padding can be responsive at the same time', ()
           padding-left: 20px;
           padding-left: var(--container-padding);
         }
+        .sm\\:m-container {
+          margin: 20px;
+          margin: var(--container-padding);
+        }
         .sm\\:my-container {
           margin-top: 20px;
           margin-top: var(--container-padding);
@@ -580,6 +627,10 @@ test('both the max width and the padding can be responsive at the same time', ()
         .sm\\:ml-container {
           margin-left: 20px;
           margin-left: var(--container-padding);
+        }
+        .sm\\:-m-container {
+          margin: -20px;
+          margin: var(--container-padding-negative);
         }
         .sm\\:-my-container {
           margin-top: -20px;
@@ -669,6 +720,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
         max-width: 800px;
         max-width: var(--container-max-width);
       }
+      .p-container {
+        padding: 20px;
+        padding: var(--container-padding);
+      }
       .py-container {
         padding-top: 20px;
         padding-top: var(--container-padding);
@@ -697,6 +752,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
         padding-left: 20px;
         padding-left: var(--container-padding);
       }
+      .m-container {
+        margin: 20px;
+        margin: var(--container-padding);
+      }
       .my-container {
         margin-top: 20px;
         margin-top: var(--container-padding);
@@ -724,6 +783,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
       .ml-container {
         margin-left: 20px;
         margin-left: var(--container-padding);
+      }
+      .-m-container {
+        margin: -20px;
+        margin: var(--container-padding-negative);
       }
       .-my-container {
         margin-top: -20px;
@@ -766,6 +829,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
           max-width: 800px;
           max-width: var(--container-max-width);
         }
+        .sm\\:p-container {
+          padding: 20px;
+          padding: var(--container-padding);
+        }
         .sm\\:py-container {
           padding-top: 20px;
           padding-top: var(--container-padding);
@@ -794,6 +861,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
           padding-left: 20px;
           padding-left: var(--container-padding);
         }
+        .sm\\:m-container {
+          margin: 20px;
+          margin: var(--container-padding);
+        }
         .sm\\:my-container {
           margin-top: 20px;
           margin-top: var(--container-padding);
@@ -821,6 +892,10 @@ test('arbitrary screen sizes are allowed in responsive max width and padding', (
         .sm\\:ml-container {
           margin-left: 20px;
           margin-left: var(--container-padding);
+        }
+        .sm\\:-m-container {
+          margin: -20px;
+          margin: var(--container-padding-negative);
         }
         .sm\\:-my-container {
           margin-top: -20px;
@@ -868,36 +943,42 @@ test('variants can be customized', () => {
         padding-left: 15px;
         padding-right: 15px;
       }
+      .p-container { padding: 15px; }
       .py-container { padding-top: 15px; padding-bottom: 15px; }
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pt-container { padding-top: 15px; }
       .pr-container { padding-right: 15px; }
       .pb-container { padding-bottom: 15px; }
       .pl-container { padding-left: 15px; }
+      .hover\\:p-container:hover { padding: 15px; }
       .hover\\:py-container:hover { padding-top: 15px; padding-bottom: 15px; }
       .hover\\:px-container:hover { padding-left: 15px; padding-right: 15px; }
       .hover\\:pt-container:hover { padding-top: 15px; }
       .hover\\:pr-container:hover { padding-right: 15px; }
       .hover\\:pb-container:hover { padding-bottom: 15px; }
       .hover\\:pl-container:hover { padding-left: 15px; }
+      .m-container { margin: 15px; }
       .my-container { margin-top: 15px; margin-bottom: 15px; }
       .mx-container { margin-left: 15px; margin-right: 15px; }
       .mt-container { margin-top: 15px; }
       .mr-container { margin-right: 15px; }
       .mb-container { margin-bottom: 15px; }
       .ml-container { margin-left: 15px; }
+      .hover\\:m-container:hover { margin: 15px; }
       .hover\\:my-container:hover { margin-top: 15px; margin-bottom: 15px; }
       .hover\\:mx-container:hover { margin-left: 15px; margin-right: 15px; }
       .hover\\:mt-container:hover { margin-top: 15px; }
       .hover\\:mr-container:hover { margin-right: 15px; }
       .hover\\:mb-container:hover { margin-bottom: 15px; }
       .hover\\:ml-container:hover { margin-left: 15px; }
+      .-m-container { margin: -15px; }
       .-my-container { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-mt-container { margin-top: -15px; }
       .-mr-container { margin-right: -15px; }
       .-mb-container { margin-bottom: -15px; }
       .-ml-container { margin-left: -15px; }
+      .hover\\:-m-container:hover { margin: -15px; }
       .hover\\:-my-container:hover { margin-top: -15px; margin-bottom: -15px; }
       .hover\\:-mx-container:hover { margin-left: -15px; margin-right: -15px; }
       .hover\\:-mt-container:hover { margin-top: -15px; }
@@ -956,18 +1037,21 @@ test('multiple containers can be generated', () => {
       .w-container-sm { width: 1200px; }
       .min-w-container-sm { min-width: 1200px; }
       .max-w-container-sm { max-width: 1200px; }
+      .p-container-sm { padding: 15px; }
       .py-container-sm { padding-top: 15px; padding-bottom: 15px; }
       .px-container-sm { padding-left: 15px; padding-right: 15px; }
       .pt-container-sm { padding-top: 15px; }
       .pr-container-sm { padding-right: 15px; }
       .pb-container-sm { padding-bottom: 15px; }
       .pl-container-sm { padding-left: 15px; }
+      .m-container-sm { margin: 15px; }
       .my-container-sm { margin-top: 15px; margin-bottom: 15px; }
       .mx-container-sm { margin-left: 15px; margin-right: 15px; }
       .mt-container-sm { margin-top: 15px; }
       .mr-container-sm { margin-right: 15px; }
       .mb-container-sm { margin-bottom: 15px; }
       .ml-container-sm { margin-left: 15px; }
+      .-m-container-sm { margin: -15px; }
       .-my-container-sm { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container-sm { margin-left: -15px; margin-right: -15px; }
       .-mt-container-sm { margin-top: -15px; }
@@ -977,6 +1061,10 @@ test('multiple containers can be generated', () => {
       .w-container-lg { width: 1400px; }
       .min-w-container-lg { min-width: 1400px; }
       .max-w-container-lg { max-width: 1400px; }
+      .p-container-lg {
+        padding: 30px;
+        padding: var(--container-lg-padding);
+      }
       .py-container-lg {
         padding-top: 30px;
         padding-top: var(--container-lg-padding);
@@ -1005,6 +1093,10 @@ test('multiple containers can be generated', () => {
         padding-left: 30px;
         padding-left: var(--container-lg-padding);
       }
+      .m-container-lg {
+        margin: 30px;
+        margin: var(--container-lg-padding);
+      }
       .my-container-lg {
         margin-top: 30px;
         margin-top: var(--container-lg-padding);
@@ -1032,6 +1124,10 @@ test('multiple containers can be generated', () => {
       .ml-container-lg {
         margin-left: 30px;
         margin-left: var(--container-lg-padding);
+      }
+      .-m-container-lg {
+        margin: -30px;
+        margin: var(--container-lg-padding-negative);
       }
       .-my-container-lg {
         margin-top: -30px;
@@ -1065,18 +1161,21 @@ test('multiple containers can be generated', () => {
         .sm\\:w-container-sm { width: 1200px; }
         .sm\\:min-w-container-sm { min-width: 1200px; }
         .sm\\:max-w-container-sm { max-width: 1200px; }
+        .sm\\:p-container-sm { padding: 15px; }
         .sm\\:py-container-sm { padding-top: 15px; padding-bottom: 15px; }
         .sm\\:px-container-sm { padding-left: 15px; padding-right: 15px; }
         .sm\\:pt-container-sm { padding-top: 15px; }
         .sm\\:pr-container-sm { padding-right: 15px; }
         .sm\\:pb-container-sm { padding-bottom: 15px; }
         .sm\\:pl-container-sm { padding-left: 15px; }
+        .sm\\:m-container-sm { margin: 15px; }
         .sm\\:my-container-sm { margin-top: 15px; margin-bottom: 15px; }
         .sm\\:mx-container-sm { margin-left: 15px; margin-right: 15px; }
         .sm\\:mt-container-sm { margin-top: 15px; }
         .sm\\:mr-container-sm { margin-right: 15px; }
         .sm\\:mb-container-sm { margin-bottom: 15px; }
         .sm\\:ml-container-sm { margin-left: 15px; }
+        .sm\\:-m-container-sm { margin: -15px; }
         .sm\\:-my-container-sm { margin-top: -15px; margin-bottom: -15px; }
         .sm\\:-mx-container-sm { margin-left: -15px; margin-right: -15px; }
         .sm\\:-mt-container-sm { margin-top: -15px; }
@@ -1086,6 +1185,10 @@ test('multiple containers can be generated', () => {
         .sm\\:w-container-lg { width: 1400px; }
         .sm\\:min-w-container-lg { min-width: 1400px; }
         .sm\\:max-w-container-lg { max-width: 1400px; }
+        .sm\\:p-container-lg {
+          padding: 30px;
+          padding: var(--container-lg-padding);
+        }
         .sm\\:py-container-lg {
           padding-top: 30px;
           padding-top: var(--container-lg-padding);
@@ -1114,6 +1217,10 @@ test('multiple containers can be generated', () => {
           padding-left: 30px;
           padding-left: var(--container-lg-padding);
         }
+        .sm\\:m-container-lg {
+          margin: 30px;
+          margin: var(--container-lg-padding);
+        }
         .sm\\:my-container-lg {
           margin-top: 30px;
           margin-top: var(--container-lg-padding);
@@ -1141,6 +1248,10 @@ test('multiple containers can be generated', () => {
         .sm\\:ml-container-lg {
           margin-left: 30px;
           margin-left: var(--container-lg-padding);
+        }
+        .sm\\:-m-container-lg {
+          margin: -30px;
+          margin: var(--container-lg-padding-negative);
         }
         .sm\\:-my-container-lg {
           margin-top: -30px;
@@ -1205,18 +1316,21 @@ test('containers can be extended', () => {
         padding-left: 30px;
         padding-right: 30px;
       }
+      .p-container { padding: 15px; }
       .py-container { padding-top: 15px; padding-bottom: 15px; }
       .px-container { padding-left: 15px; padding-right: 15px; }
       .pt-container { padding-top: 15px; }
       .pr-container { padding-right: 15px; }
       .pb-container { padding-bottom: 15px; }
       .pl-container { padding-left: 15px; }
+      .m-container { margin: 15px; }
       .my-container { margin-top: 15px; margin-bottom: 15px; }
       .mx-container { margin-left: 15px; margin-right: 15px; }
       .mt-container { margin-top: 15px; }
       .mr-container { margin-right: 15px; }
       .mb-container { margin-bottom: 15px; }
       .ml-container { margin-left: 15px; }
+      .-m-container { margin: -15px; }
       .-my-container { margin-top: -15px; margin-bottom: -15px; }
       .-mx-container { margin-left: -15px; margin-right: -15px; }
       .-mt-container { margin-top: -15px; }
@@ -1226,18 +1340,21 @@ test('containers can be extended', () => {
       .w-container-constrained { width: 1400px; }
       .min-w-container-constrained { min-width: 1400px; }
       .max-w-container-constrained { max-width: 1400px; }
+      .p-container-constrained { padding: 30px; }
       .py-container-constrained { padding-top: 30px; padding-bottom: 30px; }
       .px-container-constrained { padding-left: 30px; padding-right: 30px; }
       .pt-container-constrained { padding-top: 30px; }
       .pr-container-constrained { padding-right: 30px; }
       .pb-container-constrained { padding-bottom: 30px; }
       .pl-container-constrained { padding-left: 30px; }
+      .m-container-constrained { margin: 30px; }
       .my-container-constrained { margin-top: 30px; margin-bottom: 30px; }
       .mx-container-constrained { margin-left: 30px; margin-right: 30px; }
       .mt-container-constrained { margin-top: 30px; }
       .mr-container-constrained { margin-right: 30px; }
       .mb-container-constrained { margin-bottom: 30px; }
       .ml-container-constrained { margin-left: 30px; }
+      .-m-container-constrained { margin: -30px; }
       .-my-container-constrained { margin-top: -30px; margin-bottom: -30px; }
       .-mx-container-constrained { margin-left: -30px; margin-right: -30px; }
       .-mt-container-constrained { margin-top: -30px; }

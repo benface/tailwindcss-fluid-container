@@ -100,6 +100,9 @@ module.exports = plugin.withOptions(function(options = {}) {
       if (container.varPadding !== null) {
         if (options.paddingUtilities) {
           addUtilities({
+            [`.${e(`p-${container.name}`)}`]: {
+              padding: container.varPadding,
+            },
             [`.${e(`py-${container.name}`)}`]: {
               paddingTop: container.varPadding,
               paddingBottom: container.varPadding,
@@ -125,6 +128,9 @@ module.exports = plugin.withOptions(function(options = {}) {
 
         if (options.marginUtilities) {
           addUtilities({
+            [`.${e(`m-${container.name}`)}`]: {
+              margin: container.varPadding,
+            },
             [`.${e(`my-${container.name}`)}`]: {
               marginTop: container.varPadding,
               marginBottom: container.varPadding,
@@ -150,6 +156,9 @@ module.exports = plugin.withOptions(function(options = {}) {
 
         if (options.negativeMarginUtilities) {
           addUtilities({
+            [`.${e(`-m-${container.name}`)}`]: {
+              margin: container.varPaddingNegative,
+            },
             [`.${e(`-my-${container.name}`)}`]: {
               marginTop: container.varPaddingNegative,
               marginBottom: container.varPaddingNegative,

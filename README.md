@@ -92,6 +92,10 @@ html {
   max-width: 800px;
   max-width: var(--container-max-width);
 }
+.p-container {
+  padding: 15px;
+  padding: var(--container-padding);
+}
 .py-container {
   padding-top: 15px;
   padding-top: var(--container-padding);
@@ -120,6 +124,10 @@ html {
   padding-left: 15px;
   padding-left: var(--container-padding);
 }
+.m-container {
+  margin: 15px;
+  margin: var(--container-padding);
+}
 .my-container {
   margin-top: 15px;
   margin-top: var(--container-padding);
@@ -147,6 +155,10 @@ html {
 .ml-container {
   margin-left: 15px;
   margin-left: var(--container-padding);
+}
+.-m-container {
+  margin: -15px;
+  margin: var(--container-padding-negative);
 }
 .-my-container {
   margin-top: -15px;
