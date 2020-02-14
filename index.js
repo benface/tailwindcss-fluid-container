@@ -100,45 +100,75 @@ module.exports = plugin.withOptions(function(options = {}) {
       if (container.varPadding !== null) {
         if (options.paddingUtilities) {
           addUtilities({
+            [`.${e(`py-${container.name}`)}`]: {
+              paddingTop: container.varPadding,
+              paddingBottom: container.varPadding,
+            },
             [`.${e(`px-${container.name}`)}`]: {
               paddingLeft: container.varPadding,
               paddingRight: container.varPadding,
             },
-            [`.${e(`pl-${container.name}`)}`]: {
-              paddingLeft: container.varPadding,
+            [`.${e(`pt-${container.name}`)}`]: {
+              paddingTop: container.varPadding,
             },
             [`.${e(`pr-${container.name}`)}`]: {
               paddingRight: container.varPadding,
+            },
+            [`.${e(`pb-${container.name}`)}`]: {
+              paddingBottom: container.varPadding,
+            },
+            [`.${e(`pl-${container.name}`)}`]: {
+              paddingLeft: container.varPadding,
             },
           }, containerVariants);
         }
 
         if (options.marginUtilities) {
           addUtilities({
+            [`.${e(`my-${container.name}`)}`]: {
+              marginTop: container.varPadding,
+              marginBottom: container.varPadding,
+            },
             [`.${e(`mx-${container.name}`)}`]: {
               marginLeft: container.varPadding,
               marginRight: container.varPadding,
             },
-            [`.${e(`ml-${container.name}`)}`]: {
-              marginLeft: container.varPadding,
+            [`.${e(`mt-${container.name}`)}`]: {
+              marginTop: container.varPadding,
             },
             [`.${e(`mr-${container.name}`)}`]: {
               marginRight: container.varPadding,
+            },
+            [`.${e(`mb-${container.name}`)}`]: {
+              marginBottom: container.varPadding,
+            },
+            [`.${e(`ml-${container.name}`)}`]: {
+              marginLeft: container.varPadding,
             },
           }, containerVariants);
         }
 
         if (options.negativeMarginUtilities) {
           addUtilities({
+            [`.${e(`-my-${container.name}`)}`]: {
+              marginTop: container.varPaddingNegative,
+              marginBottom: container.varPaddingNegative,
+            },
             [`.${e(`-mx-${container.name}`)}`]: {
               marginLeft: container.varPaddingNegative,
               marginRight: container.varPaddingNegative,
             },
-            [`.${e(`-ml-${container.name}`)}`]: {
-              marginLeft: container.varPaddingNegative,
+            [`.${e(`-mt-${container.name}`)}`]: {
+              marginTop: container.varPaddingNegative,
             },
             [`.${e(`-mr-${container.name}`)}`]: {
               marginRight: container.varPaddingNegative,
+            },
+            [`.${e(`-mb-${container.name}`)}`]: {
+              marginBottom: container.varPaddingNegative,
+            },
+            [`.${e(`-ml-${container.name}`)}`]: {
+              marginLeft: container.varPaddingNegative,
             },
           }, containerVariants);
         }
