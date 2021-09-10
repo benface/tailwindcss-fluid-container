@@ -26,6 +26,7 @@ module.exports = plugin.withOptions(function(options = {}) {
     };
 
     const baseStyles = {};
+    const baseStylesAtRules = {};
     const containerVariants = variants('fluidContainer');
 
     _.forEach(theme('fluidContainer'), function(containerOptions, containerName) {
@@ -51,10 +52,10 @@ module.exports = plugin.withOptions(function(options = {}) {
 
           _.forEach(nonDefaultMaxWidths, function(maxWidth, screen) {
             const mediaQuery = getMediaQuery(screen);
-            if (!baseStyles[mediaQuery]) {
-              baseStyles[mediaQuery] = {};
+            if (!baseStylesAtRules[mediaQuery]) {
+              baseStylesAtRules[mediaQuery] = {};
             }
-            baseStyles[mediaQuery][`--${container.name}-max-width`] = maxWidth;
+            baseStylesAtRules[mediaQuery][`--${container.name}-max-width`] = maxWidth;
           });
         }
       }
@@ -82,10 +83,10 @@ module.exports = plugin.withOptions(function(options = {}) {
 
           _.forEach(nonDefaultPaddings, function(padding, screen) {
             const mediaQuery = getMediaQuery(screen);
-            if (!baseStyles[mediaQuery]) {
-              baseStyles[mediaQuery] = {};
+            if (!baseStylesAtRules[mediaQuery]) {
+              baseStylesAtRules[mediaQuery] = {};
             }
-            baseStyles[mediaQuery][`--${container.name}-padding`] = padding;
+            baseStylesAtRules[mediaQuery][`--${container.name}-padding`] = padding;
           });
         }
       }
@@ -206,6 +207,11 @@ module.exports = plugin.withOptions(function(options = {}) {
     if (!_.isEmpty(baseStyles)) {
       addBase({
         'html': baseStyles,
+      });
+    }
+    if (!_.isEmpty(baseStylesAtRules)) {
+      addBase({
+        html: baseStylesAtRules,
       });
     }
   };
